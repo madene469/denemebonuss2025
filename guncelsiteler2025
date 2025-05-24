@@ -75,5 +75,46 @@
 
     fetchData();
   </script>
+<div id="veriTablosu">
+      <h2>Google Sheets Verileri</h2>
+      <table border="1" id="dataTable">
+        <thead></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+
+    <script>
+    fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vSmcsOFxi5y2221lhdvKgvJnZhmUBgYxBAajROTGvRkk_H8TOobF9IGHF-fUlU3LG9QHKY_5yf7Hcr/pub?output=tsv")
+      .then(response => response.text())
+      .then(data => {
+        const rows = data.trim().split('\n').map(row => row.split('\t'));
+        const table = document.getElementById('dataTable');
+        
+        // Başlık
+        const thead = table.querySelector('thead');
+        const headerRow = document.createElement('tr');
+        rows[0].forEach(cell => {
+          const th = document.createElement('th');
+          th.textContent = cell;
+          headerRow.appendChild(th);
+        });
+        thead.appendChild(headerRow);
+        
+        // Satırlar
+        const tbody = table.querySelector('tbody');
+        rows.slice(1).forEach(row => {
+          const tr = document.createElement('tr');
+          row.forEach(cell => {
+            const td = document.createElement('td');
+            td.textContent = cell;
+            tr.appendChild(td);
+          });
+          tbody.appendChild(tr);
+        });
+      });
+    </script>
+
+</body>
+</html>
 </body>
 </html>
