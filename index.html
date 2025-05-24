@@ -43,6 +43,11 @@
       font-size: 16px;
       color: #ff5722;
     }
+
+    iframe {
+      margin-top: 40px;
+      border: none;
+    }
   </style>
 </head>
 <body>
@@ -50,7 +55,7 @@
   <div id="siteList" class="grid"></div>
 
   <script>
-    const sheetURL = "https://script.google.com/macros/s/AKfycbzlJFf4gd4hx66RC8cckwegGdSoLeoJxNOl91U_cB_TytyAsCk-B_QkYUrJ4iwwRa_yRA/exec"; // 
+    const sheetURL = "https://script.google.com/macros/s/AKfycbzlJFf4gd4hx66RC8cckwegGdSoLeoJxNOl91U_cB_TytyAsCk-B_QkYUrJ4iwwRa_yRA/exec";
 
     async function fetchData() {
       const response = await fetch(sheetURL);
@@ -75,54 +80,15 @@
 
     fetchData();
   </script>
-<div id="veriTablosu">
-      <h2>Google Sheets Verileri</h2>
-      <table border="1" id="dataTable">
-        <thead></thead>
-        <tbody></tbody>
-      </table>
-    </div>
-
-    <script>
-    fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vSmcsOFxi5y2221lhdvKgvJnZhmUBgYxBAajROTGvRkk_H8TOobF9IGHF-fUlU3LG9QHKY_5yf7Hcr/pub?output=tsv")
-      .then(response => response.text())
-      .then(data => {
-        const rows = data.trim().split('\n').map(row => row.split('\t'));
-        const table = document.getElementById('dataTable');
-        
-        // Başlık
-        const thead = table.querySelector('thead');
-        const headerRow = document.createElement('tr');
-        rows[0].forEach(cell => {
-          const th = document.createElement('th');
-          th.textContent = cell;
-          headerRow.appendChild(th);
-        });
-        thead.appendChild(headerRow);
-        
-        // Satırlar
-        const tbody = table.querySelector('tbody');
-        rows.slice(1).forEach(row => {
-          const tr = document.createElement('tr');
-          row.forEach(cell => {
-            const td = document.createElement('td');
-            td.textContent = cell;
-            tr.appendChild(td);
-          });
-          tbody.appendChild(tr);
-        });
-      });
-    </script>
-<body>
-
-  <!-- Diğer içerikler -->
 
   <h2>Google Sheets Verileri</h2>
-<iframe 
-  src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSmcsOFxi5y222I1hdvKgvJnZhmUBgYxBAajROTGVyRkk_H8TOobF9IGHF-fUIU3LG9QHKY_5yf7Hcr/pubhtml?widget=true&amp;headers=false" 
-  width="100%" 
-  height="600" 
-  frameborder="0">
-</iframe>
-  </body>
+  <iframe 
+    src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSmcsOFxi5y222I1hdvKgvJnZhmUBgYxBAajROTGVyRkk_H8TOobF9IGHF-fUIU3LG9QHKY_5yf7Hcr/pubhtml?widget=true&amp;headers=false" 
+    width="100%" 
+    height="600">
+  </iframe>
+
+</body>
 </html>
+
+
