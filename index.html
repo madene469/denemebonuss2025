@@ -180,9 +180,11 @@ async function fetchData() {
     thead.innerHTML = "<tr>" + headers.map(h => `<th>${h}</th>`).join('') + "</tr>";
 
     // Verileri oluştur
-    tbody.innerHTML = data.map(row =>
-      `<tr>${headers.map(h => `<td>${row[h]}</td>`).join('')}</tr>`
-    ).join('');
+   tbody.innerHTML = data.map(row =>
+  `<tr>` +
+    headers.map(h => `<td data-label="${h}">${row[h]}</td>`).join('') +
+  `</tr>`
+).join('');
 
     // Arama filtresi
     document.getElementById("searchInput").addEventListener("input", function () {
