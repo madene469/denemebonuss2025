@@ -1,210 +1,142 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Bonus Siteleri</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bonus Veren Siteler</title>
   <style>
     body {
-      background: #1e1e2f;
-      color: white;
-      font-family: sans-serif;
-      padding: 20px;
+      font-family: Arial, sans-serif;
+      background-color: #f9f9f9;
+      margin: 20px;
     }
 
     h1 {
       text-align: center;
       color: orange;
+      margin-bottom: 30px;
     }
 
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      margin-top: 30px;
-    }
-
-    .card {
-      background: #2e2e40;
-      padding: 20px;
-      border-radius: 12px;
-      text-align: center;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
-    }
-
-    .card img {
-      max-width: 150px;
-      margin-bottom: 10px;
-    }
-
-    .card span {
-      display: block;
-      margin-top: 10px;
+    #searchInput {
+      padding: 10px;
+      margin-bottom: 20px;
+      width: 100%;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 8px;
       font-size: 16px;
-      color: #ff5722;
     }
 
-    iframe {
-      margin-top: 40px;
-      border: none;
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background-color: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    thead {
+      background-color: #007acc;
+      color: white;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    @media (max-width: 600px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+
+      thead {
+        display: none;
+      }
+
+      tr {
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 10px;
+        background-color: white;
+      }
+
+      td {
+        position: relative;
+        padding-left: 50%;
+        text-align: right;
+        border: none;
+        border-bottom: 1px solid #eee;
+      }
+
+      td::before {
+        position: absolute;
+        left: 10px;
+        top: 12px;
+        white-space: nowrap;
+        font-weight: bold;
+        content: attr(data-label);
+        text-align: left;
+      }
     }
   </style>
 </head>
 <body>
+
   <h1>Bonus Veren Siteler</h1>
-  <div id="siteList" class="grid"></div>
+
+  <input type="text" id="searchInput" placeholder="Ara...">
+
+  <table id="data-table">
+    <thead></thead>
+    <tbody></tbody>
+  </table>
 
   <script>
-    const sheetURL = "https://script.google.com/macros/s/AKfycbz1lFf4gd4hx66RC8cckwegGdSoLeoJxNQl9XXXXXXX/exec";
+    const sheetURL = "https://script.google.com/macros/s/AKfycbz1lF4gd4hx66R8CckwegGdSoLeoJxNQl9XXXXXXX/exec"; // kendi URL’inle değiştir
 
     async function fetchData() {
-      const response = await fetch(sheetURL);
-      const data = await response.text();
-      const rows = data.split("\n").slice(1);
+      try {
+        const response = await fetch(sheetURL);
+        const data = await response.json();
 
-      const container = document.getElementById("siteList");
-      container.innerHTML = "";
+        const table = document.getElementById("data-table");
+        const thead = table.querySelector("thead");
+        const tbody = table.querySelector("tbody");
 
-      rows.forEach(row => {
-        const [logo, bonus] = row.split("\t");
-        if (logo && bonus) {
-          container.innerHTML += `
-            <div class="card">
-              <img src="${logo.trim()}" alt="Site Logosu" />
-              <span>${bonus.trim()}</span>
-            </div>
-          `;
-        }
-      });
+        // Başlıklar
+        const headers = Object.keys(data[0]);
+        thead.innerHTML = "<tr>" + headers.map(h => `<th>${h}</th>`).join("") + "</tr>";
+
+        // Satırlar
+        tbody.innerHTML = data.map(row =>
+          "<tr>" + headers.map(h => `<td data-label="${h}">${row[h]}</td>`).join("") + "</tr>"
+        ).join("");
+
+        // Arama
+        document.getElementById("searchInput").addEventListener("input", function () {
+          const filter = this.value.toLowerCase();
+          const rows = tbody.querySelectorAll("tr");
+
+          rows.forEach(row => {
+            const text = row.textContent.toLowerCase();
+            row.style.display = text.includes(filter) ? "" : "none";
+          });
+        });
+
+      } catch (error) {
+        console.error("Veri çekme hatası:", error);
+      }
     }
 
     fetchData();
   </script>
-
-  <h2>Google Sheets Verileri</h2>
-  <iframe 
-    src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSmcsOFxi5y222I1hdvKgvJnZhmUBgYxBAajROTGVyRkk_H8TOobF9IGHF-fUIU3LG9QHKY_5yf7Hcr/pubhtml?widget=true&amp;headers=false" 
-    width="100%" 
-    height="600">
-  </iframe>
-<h2>Google Sheets Verileri</h2>
-<table id="data-table" border="1" style="width: 100%; border-collapse: collapse; background-color: white; color: black;">
-  <thead></thead>
-  <tbody></tbody>
-</table>
-<body>
-<input type="text" id="searchInput" placeholder="Ara..." style="margin: 10px 0; padding: 5px; width: 100%;">
-<style>
-  body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    background-color: #f9f9f9;
-  }
-
-  #searchInput {
-    padding: 10px;
-    margin-bottom: 15px;
-    width: 100%;
-    box-sizing: border-box;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    font-size: 16px;
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    background-color: white;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-
-  thead {
-    background-color: #007acc;
-    color: white;
-  }
-
-  th, td {
-    padding: 12px;
-    text-align: left;
-    border-bottom: 1px solid #eee;
-  }
-
-  tr:hover {
-    background-color: #f1f1f1;
-  }
-
-  @media (max-width: 600px) {
-    table, thead, tbody, th, td, tr {
-      display: block;
-    }
-
-    th {
-      display: none;
-    }
-
-    td {
-      position: relative;
-      padding-left: 50%;
-      text-align: right;
-      border: none;
-      border-bottom: 1px solid #eee;
-    }
-
-    td::before {
-      position: absolute;
-      left: 10px;
-      top: 12px;
-      white-space: nowrap;
-      font-weight: bold;
-      content: attr(data-label);
-      text-align: left;
-    }
-  }
-</style>
-<script>
- const sheetURL = "https://script.google.com/macros/s/AKfycbz1lFf4gd4hx66RC8cckwegGdSoLeoJxNQl9XXXXXXX/exec; //
-
-async function fetchData() {
-  try {
-    const response = await fetch(sheetURL);
-    const data = await response.json();
-
-    const table = document.getElementById("data-table");
-    const thead = table.querySelector("thead");
-    const tbody = table.querySelector("tbody");
-
-    // Başlıkları oluştur
-    const headers = Object.keys(data[0]);
-    thead.innerHTML = "<tr>" + headers.map(h => `<th>${h}</th>`).join('') + "</tr>";
-
-    // Verileri oluştur
-   tbody.innerHTML = data.map(row =>
-  `<tr>` +
-    headers.map(h => `<td data-label="${h}">${row[h]}</td>`).join('') +
-  `</tr>`
-).join('');
-
-    // Arama filtresi
-    document.getElementById("searchInput").addEventListener("input", function () {
-  const filter = this.value.toLowerCase();
-  const rows = tbody.querySelectorAll("tr"); //
-
-  rows.forEach(row => {
-    const text = row.textContent.toLowerCase();
-    row.style.display = text.includes(filter) ? "" : "none";
-  });
-});
-
-  } catch (error) {
-    console.error("Veri çekme hatası:", error);
-  }
-}
-
-fetchData();
-</script>
 </body>
 </html>
-
-
