@@ -57,13 +57,7 @@
     }
 
     #veriTablosu {
-      margin-top: 40px;
-    }
-
-    #veriTablosu h2 {
-      color: orange;
-      text-align: center;
-      margin-bottom: 10px;
+      margin-top: 60px;
     }
 
     #dataTable {
@@ -96,24 +90,23 @@
   <!-- Arama kutusu -->
   <input type="text" id="searchInput" placeholder="Site adı veya bonus ara...">
 
-  <!-- Kartlar (resim ve bonus) -->
+  <!-- Kartlar -->
   <div id="siteList" class="grid"></div>
 
-  <!-- Google Sheets tablosu -->
+  <!-- Google Sheets Verileri Tablo -->
   <div id="veriTablosu">
-  <h2 style="text-align: center; color: orange;">Google Sheets Verileri</h2>
-  <iframe 
-      src="https://docs.google.com/spreadsheets/d/e/2PACX-1vSmcsOFxi5y2221IhdvKgvJnZhmUBgYxBAajROTGVyRkk_H8TOobF9IGHF-fUIU3LG9QHKY_5yf7hChr/pubhtml?widget=true&amp;headers=false" 
-      width="100%" 
-      height="600px" 
-      style="border: none; max-width: 90%;">
-    </iframe>
-</div>
-  <!-- JS: Bonus Kartları Çekme -->
+    <h2>Bonus Tablosu</h2>
+    <table id="dataTable">
+      <thead></thead>
+      <tbody></tbody>
+    </table>
+  </div>
+
+  <!-- JS: Kart verilerini çek -->
   <script>
     const sheetURL = "https://script.google.com/macros/s/AKfycbw40Y-VWNCUVZ-MbakZZgHz2bG98JnGfP_NJmbLltnCeumPFxYE_zFYCM2aB1QJtYqDzA/exec";
 
-    async function fetchData() {
+    async function fetchCards() {
       const response = await fetch(sheetURL);
       const data = await response.text();
       const rows = data.split("\n").slice(1);
@@ -150,18 +143,19 @@
       });
     }
 
-    fetchData();
+    fetchCards();
   </script>
 
-  <!-- JS: Tablo Verisi Çekme -->
+  <!-- JS: Tablo verisi çek -->
   <script>
-    fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vSmcsOFxi5y2221lhdvKgvJnZhmUBgYxBAajROTGvRkk_H8TOobF9IGHF-fUlU3LG9QHKY_5yf7Hcr/pub?output=tsv")
+    fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vSmcsOFxi5y2221IhdvKgvJnZhmUBgYxBAajROTGVyRkk_H8TOobF9IGHF-fUIU3LG9QHKY_5yf7Hcr/pub?output=tsv")
       .then(response => response.text())
       .then(data => {
         const rows = data.trim().split('\n').map(row => row.split('\t'));
         const table = document.getElementById('dataTable');
-        
         const thead = table.querySelector('thead');
+        const tbody = table.querySelector('tbody');
+
         const headerRow = document.createElement('tr');
         rows[0].forEach(cell => {
           const th = document.createElement('th');
@@ -169,8 +163,7 @@
           headerRow.appendChild(th);
         });
         thead.appendChild(headerRow);
-        
-        const tbody = table.querySelector('tbody');
+
         rows.slice(1).forEach(row => {
           const tr = document.createElement('tr');
           row.forEach(cell => {
