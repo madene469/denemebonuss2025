@@ -4,58 +4,85 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Bonus Veren Siteler</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       background-color: #1e1e2f;
       color: white;
-      font-family: sans-serif;
+      font-family: 'Inter', sans-serif;
       padding: 20px;
     }
 
     h1, h2 {
       text-align: center;
       color: orange;
+      margin-bottom: 20px;
     }
 
+    #searchInput {
+      width: 100%;
+      padding: 12px;
+      margin: 20px auto;
+      max-width: 600px;
+      display: block;
+      font-size: 16px;
+      border-radius: 10px;
+      border: none;
+      background-color: #2e2e40;
+      color: white;
+    }
+
+    /* KART TASARIMI */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
+      gap: 24px;
       margin-top: 30px;
     }
 
     .card {
       background: #2e2e40;
       padding: 20px;
-      border-radius: 12px;
+      border-radius: 16px;
       text-align: center;
-      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      box-shadow: 0 0 10px rgba(255, 165, 0, 0.1);
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
     }
 
     .card img {
-      max-width: 150px;
-      margin-bottom: 10px;
+      max-height: 80px;
+      margin-bottom: 15px;
+      max-width: 100%;
     }
 
-    .card span {
-      display: block;
-      margin-top: 10px;
-      font-size: 16px;
-      color: #ff5722;
+    .card .bonus {
+      font-weight: bold;
+      margin-bottom: 12px;
+      font-size: 17px;
+      color: #ff9800;
     }
 
-    #searchInput {
-      width: 100%;
-      padding: 10px;
-      margin-top: 30px;
-      margin-bottom: 20px;
-      font-size: 16px;
-      border-radius: 8px;
-      border: none;
-      background-color: #2e2e40;
-      color: white;
+    .card a {
+      display: inline-block;
+      background-color: orange;
+      color: black;
+      padding: 10px 20px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 14px;
+      transition: background-color 0.3s;
     }
 
+    .card a:hover {
+      background-color: #ffae42;
+    }
+
+    /* TABLO TASARIMI */
     #veriTablosu {
       margin-top: 60px;
     }
@@ -93,7 +120,7 @@
   <!-- Kartlar -->
   <div id="siteList" class="grid"></div>
 
-  <!-- Google Sheets Verileri Tablo -->
+  <!-- Bonus Tablosu -->
   <div id="veriTablosu">
     <h2>Bonus Tablosu</h2>
     <table id="dataTable">
@@ -115,13 +142,14 @@
       container.innerHTML = "";
 
       rows.forEach(row => {
-        const [logo, bonus] = row.split("\t");
-        if (logo && bonus) {
+        const [logo, bonus, link] = row.split("\t");
+        if (logo && bonus && link) {
           const card = document.createElement("div");
           card.className = "card";
           card.innerHTML = `
             <img src="${logo.trim()}" alt="Site Logosu" />
-            <span>${bonus.trim()}</span>
+            <div class="bonus">${bonus.trim()}</div>
+            <a href="${link.trim()}" target="_blank">Bonusu Al</a>
           `;
           container.appendChild(card);
         }
