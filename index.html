@@ -97,6 +97,7 @@
       border: 1px solid #444;
       padding: 10px;
       text-align: center;
+      vertical-align: middle;
     }
 
     #dataTable th {
@@ -107,12 +108,17 @@
     #dataTable tr:nth-child(even) {
       background-color: #3a3a4a;
     }
+
+    #dataTable img {
+      max-height: 50px;
+    }
   </style>
 </head>
 <body>
   <h1>Bonus Veren Siteler</h1>
   <input type="text" id="searchInput" placeholder="Site adı veya bonus ara...">
   <div id="siteList" class="grid"></div>
+
   <div id="veriTablosu">
     <h2>Bonus Tablosu</h2>
     <table id="dataTable">
@@ -122,6 +128,7 @@
   </div>
 
   <script>
+    // Kart görünümünü oluştur
     fetch("https://script.googleusercontent.com/macros/echo?user_content_key=AhESkKLisuSCbIPiz8E5AiAwvtDGkPB14ME-ezvoMr8fd5bsjPxM7FCa8jvkt-DLXRqnjhGdp4PRVEjfFbUS2BxGpp6u9jiJQAS-_1nA02Jjy1iy741dNtDZ0PAXfwss28bW5VykcHl1NJs_FnZuhZ_xSkCDQ&lib=M7e7VjGdYhGNbiJzF8o2c7MEz")
       .then(res => res.json())
       .then(data => {
@@ -150,6 +157,7 @@
         }
       });
 
+    // Arama filtresi
     document.getElementById("searchInput").addEventListener("input", applySearchFilter);
 
     function applySearchFilter() {
@@ -164,6 +172,7 @@
   </script>
 
   <script>
+    // Tabloyu oluştur
     fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vSmcsOFxi5y222I1hdvKgvJnZhmUBgYxBAajROTGVyRkk_H8TOobF9IGHF-fUIU3LG9QHKY_5yf7Hcr/pub?output=tsv")
       .then(response => response.text())
       .then(data => {
@@ -172,6 +181,7 @@
         const thead = table.querySelector('thead');
         const tbody = table.querySelector('tbody');
 
+        // Başlıklar
         const headerRow = document.createElement('tr');
         rows[0].forEach(cell => {
           const th = document.createElement('th');
@@ -180,11 +190,22 @@
         });
         thead.appendChild(headerRow);
 
+        // Veriler
         rows.slice(1).forEach(row => {
           const tr = document.createElement('tr');
-          row.forEach(cell => {
+          row.forEach((cell, index) => {
             const td = document.createElement('td');
-            td.textContent = cell;
+
+            // 0. sütun (logo URL'si) için görsel olarak göster
+            if (index === 0 && cell.startsWith("http")) {
+              const img = document.createElement('img');
+              img.src = cell.trim();
+              img.alt = "Site Logosu";
+              td.appendChild(img);
+            } else {
+              td.textContent = cell;
+            }
+
             tr.appendChild(td);
           });
           tbody.appendChild(tr);
