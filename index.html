@@ -133,7 +133,8 @@
   <div id="siteList"></div>
 
 <script>
-fetch("https://script.googleusercontent.com/macros/echo?user_content_key=...") // senin fetch linkin burada olacak
+<script>
+fetch("https://script.googleusercontent.com/macros/echo?user_content_key=AhESkKLisuSCbIPiz8E5AiAwv tDGkPB14ME-ezvoMr8fd5bsjPxM7FCa8jvkt-DLXRqnjhGdp4PRVEjfFbUS2BxGpp6u9jiJQAS-_1nA02Jjy1iy741dNtDZ0PAXfwss28bW5VykcHl1NJs_FnZuhZ_xSkCDQ&lib=M7e7VjGdYhGNbiJzF8o2c7MEz") 
   .then(res => res.json())
   .then(data => {
     const container = document.getElementById("siteList");
@@ -144,6 +145,7 @@ fetch("https://script.googleusercontent.com/macros/echo?user_content_key=...") /
       const bonus = item["BONUS"];
       const link = item["LINK"];
 
+      // Eğer üçü de varsa kartı oluştur
       if (logo && bonus && link) {
         const card = document.createElement("div");
         card.className = "card";
@@ -156,7 +158,10 @@ fetch("https://script.googleusercontent.com/macros/echo?user_content_key=...") /
       }
     });
 
-    applySearchFilter(); // Varsa filtreleme fonksiyonu çalıştır
+    // Arama filtre fonksiyonu tanımlıysa çalıştır
+    if (typeof applySearchFilter === "function") {
+      applySearchFilter();
+    }
   });
 </script>
 
