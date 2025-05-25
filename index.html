@@ -148,7 +148,7 @@
 
   <!-- JS: Tablo verisi çek -->
   <script>
-    fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vSmcsOFxi5y2221IhdvKgvJnZhmUBgYxBAajROTGVyRkk_H8TOobF9IGHF-fUIU3LG9QHKY_5yf7Hcr/pub?output=tsv")
+    fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vSmcsOFxi5y222I1hdvKgvJnZhmUBgYxBAajROTGVyRkk_H8TOobF9IGHF-fUIU3LG9QHKY_5yf7Hcr/pub?output=tsv")
       .then(response => response.text())
       .then(data => {
         const rows = data.trim().split('\n').map(row => row.split('\t'));
