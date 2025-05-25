@@ -131,32 +131,33 @@
 
   <!-- JS: Kart verilerini çek -->
   <script>
-    const sheetURL = "https://script.google.com/macros/s/AKfycbw40Y-VWNCUVZ-MbakZZgHz2bG98JnGfP_NJmbLltnCeumPFxYE_zFYCM2aB1QJtYqDzA/exec";
+fetch("https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLisUScblPiz8E5AiwvVtDGkPB14eME-ezvoMr8fd5bsjPxM7FCa0jvKt-DLXRqnjhG4p4YRVEjfFUbS2BxGpp6uj9IjQAS_-lnAO2Jjyliy74idNIDzOPAXfwss28vMSyVkoH1lNJs_FnZuhZ_x5kCDQ&lib=MYe7VjGdYhGNiNbJZzF0Jzo8VXbg9WcQ7")
+  .then(res => res.json())
+  .then(data => {
+    const container = document.getElementById("siteList");
+    container.innerHTML = "";
 
-    async function fetchCards() {
-      const response = await fetch(sheetURL);
-      const data = await response.text();
-      const rows = data.split("\n").slice(1);
+    data.forEach(item => {
+      const logo = item["SİTE ADI VE LOGO"];
+      const bonus = item["BONUS"];
+      const link = item["LİNK"];
 
-      const container = document.getElementById("siteList");
-      container.innerHTML = "";
+      if (logo && bonus && link) {
+        const card = document.createElement("div");
+        card.className = "card";
+        card.innerHTML = `
+          <img src="${logo.trim()}" alt="Site Logosu" style="max-width: 150px;" />
+          <div class="bonus">${bonus.trim()}</div>
+          <a href="${link.trim()}" target="_blank">Bonusu Al</a>
+        `;
+        container.appendChild(card);
+      }
+    });
 
-      rows.forEach(row => {
-  const [logo, bonus, link] = row.split("\t");
-  if (logo && bonus && link) {
-    const card = document.createElement("div");
-    card.className = "card";
-    card.innerHTML = `
-      <img src="${logo.trim()}" alt="Site Logosu" />
-      <div class="bonus">${bonus.trim()}</div>
-      <a href="${link.trim()}" target="_blank">Bonusu Al</a>
-    `;
-    container.appendChild(card);
-  }
-});
+    applySearchFilter(); // Arama fonksiyonun varsa çalıştır
+  });
+</script>
 
-      applySearchFilter();
-    }
 
     // Arama filtresi
     document.getElementById("searchInput").addEventListener("input", applySearchFilter);
