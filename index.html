@@ -32,7 +32,6 @@
       color: white;
     }
 
-    /* KART TASARIMI */
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
@@ -82,7 +81,6 @@
       background-color: #ffae42;
     }
 
-    /* TABLO TASARIMI */
     #veriTablosu {
       margin-top: 60px;
     }
@@ -113,14 +111,8 @@
 </head>
 <body>
   <h1>Bonus Veren Siteler</h1>
-
-  <!-- Arama kutusu -->
   <input type="text" id="searchInput" placeholder="Site adı veya bonus ara...">
-
-  <!-- Kartlar -->
   <div id="siteList" class="grid"></div>
-
-  <!-- Bonus Tablosu -->
   <div id="veriTablosu">
     <h2>Bonus Tablosu</h2>
     <table id="dataTable">
@@ -129,46 +121,35 @@
     </table>
   </div>
 
-  <!-- JS: Kart verilerini çek -->
-  <div id="siteList"></div>
+  <script>
+    fetch("https://script.googleusercontent.com/macros/echo?user_content_key=AhESkKLisuSCbIPiz8E5AiAwvtDGkPB14ME-ezvoMr8fd5bsjPxM7FCa8jvkt-DLXRqnjhGdp4PRVEjfFbUS2BxGpp6u9jiJQAS-_1nA02Jjy1iy741dNtDZ0PAXfwss28bW5VykcHl1NJs_FnZuhZ_xSkCDQ&lib=M7e7VjGdYhGNbiJzF8o2c7MEz")
+      .then(res => res.json())
+      .then(data => {
+        const container = document.getElementById("siteList");
+        container.innerHTML = "";
 
-<script>
-<script>
-fetch("https://script.googleusercontent.com/macros/echo?user_content_key=AhESkKLisuSCbIPiz8E5AiAwv tDGkPB14ME-ezvoMr8fd5bsjPxM7FCa8jvkt-DLXRqnjhGdp4PRVEjfFbUS2BxGpp6u9jiJQAS-_1nA02Jjy1iy741dNtDZ0PAXfwss28bW5VykcHl1NJs_FnZuhZ_xSkCDQ&lib=M7e7VjGdYhGNbiJzF8o2c7MEz") 
-  .then(res => res.json())
-  .then(data => {
-    const container = document.getElementById("siteList");
-    container.innerHTML = "";
+        data.forEach(item => {
+          const logo = item["SITE ADI VE LOGO"];
+          const bonus = item["BONUS"];
+          const link = item["LINK"];
 
-    data.forEach(item => {
-      const logo = item["SITE ADI VE LOGO"];
-      const bonus = item["BONUS"];
-      const link = item["LINK"];
+          if (logo && bonus && link) {
+            const card = document.createElement("div");
+            card.className = "card";
+            card.innerHTML = `
+              <img src="${logo.trim()}" alt="Site Logosu" />
+              <div class="bonus">${bonus.trim()}</div>
+              <a href="${link.trim()}" target="_blank">Bonusu Al</a>
+            `;
+            container.appendChild(card);
+          }
+        });
 
-      // Eğer üçü de varsa kartı oluştur
-      if (logo && bonus && link) {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `
-          <img src="${logo.trim()}" alt="Site Logosu" style="max-width: 150px; display: block; margin-bottom: 10px;" />
-          <div class="bonus">${bonus.trim()}</div>
-          <a href="${link.trim()}" target="_blank">Bonusu Al</a>
-        `;
-        container.appendChild(card);
-      }
-    });
+        if (typeof applySearchFilter === "function") {
+          applySearchFilter();
+        }
+      });
 
-    // Arama filtre fonksiyonu tanımlıysa çalıştır
-    if (typeof applySearchFilter === "function") {
-      applySearchFilter();
-    }
-  });
-</script>
-
-
-
-
-    // Arama filtresi
     document.getElementById("searchInput").addEventListener("input", applySearchFilter);
 
     function applySearchFilter() {
@@ -180,11 +161,8 @@ fetch("https://script.googleusercontent.com/macros/echo?user_content_key=AhESkKL
         card.style.display = text.includes(filter) ? "block" : "none";
       });
     }
-
-    fetchCards();
   </script>
 
-  <!-- JS: Tablo verisi çek -->
   <script>
     fetch("https://docs.google.com/spreadsheets/d/e/2PACX-1vSmcsOFxi5y222I1hdvKgvJnZhmUBgYxBAajROTGVyRkk_H8TOobF9IGHF-fUIU3LG9QHKY_5yf7Hcr/pub?output=tsv")
       .then(response => response.text())
