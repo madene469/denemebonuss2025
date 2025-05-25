@@ -142,18 +142,18 @@
       container.innerHTML = "";
 
       rows.forEach(row => {
-        const [logo, bonus, link] = row.split("\t");
-        if (logo && bonus && link) {
-          const card = document.createElement("div");
-          card.className = "card";
-          card.innerHTML = `
-            <img src="${logo.trim()}" alt="Site Logosu" />
-            <div class="bonus">${bonus.trim()}</div>
-            <a href="${link.trim()}" target="_blank">Bonusu Al</a>
-          `;
-          container.appendChild(card);
-        }
-      });
+  const [logo, bonus, link] = row.split("\t");
+  if (logo && bonus && link) {
+    const card = document.createElement("div");
+    card.className = "card";
+    card.innerHTML = `
+      <img src="${logo.trim()}" alt="Site Logosu" />
+      <div class="bonus">${bonus.trim()}</div>
+      <a href="${link.trim()}" target="_blank">Bonusu Al</a>
+    `;
+    container.appendChild(card);
+  }
+});
 
       applySearchFilter();
     }
