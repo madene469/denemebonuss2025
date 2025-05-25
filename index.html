@@ -130,17 +130,19 @@
   </div>
 
   <!-- JS: Kart verilerini çek -->
-  <script>
-fetch("https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLisUScblPiz8E5AiwvVtDGkPB14eME-ezvoMr8fd5bsjPxM7FCa0jvKt-DLXRqnjhG4p4YRVEjfFUbS2BxGpp6uj9IjQAS_-lnAO2Jjyliy74idNIDzOPAXfwss28vMSyVkoH1lNJs_FnZuhZ_x5kCDQ&lib=MYe7VjGdYhGNiNbJZzF0Jzo8VXbg9WcQ7")
+  <div id="siteList"></div>
+
+<script>
+fetch("https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLisUScbIPiz8E5AiwvVtDGkPB14eME-ezvoMr8fd5bsjPxM7FCa0jvkDt-DLXRqnjhG4p4YRVEfjFUbS2BxGpp6uj9iJQAS_-lnAO2Jjy1iy74idNIDzOPAXfwss28vMSyVkoH1lNJs_FnZuhZ_x5kCDQ&lib=M7e7VjGdYhGNibNzF0Jzci9IpvUU2j7dY")
   .then(res => res.json())
   .then(data => {
     const container = document.getElementById("siteList");
     container.innerHTML = "";
 
     data.forEach(item => {
-      const logo = item["SİTE ADI VE LOGO"];
+      const logo = item["SITE ADI VE LOGO"];
       const bonus = item["BONUS"];
-      const link = item["LİNK"];
+      const link = item["LINK"];
 
       if (logo && bonus && link) {
         const card = document.createElement("div");
@@ -153,6 +155,10 @@ fetch("https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLi
         container.appendChild(card);
       }
     });
+
+    applySearchFilter(); // Arama varsa çalıştır
+  });
+</script>
 
   
 </script>
