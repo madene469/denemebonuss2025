@@ -133,7 +133,7 @@
   <div id="siteList"></div>
 
 <script>
-fetch("https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLisUScbIPiz8E5AiwvVtDGkPB14eME-ezvoMr8fd5bsjPxM7FCa0jvkDt-DLXRqnjhG4p4YRVEfjFUbS2BxGpp6uj9iJQAS_-lnAO2Jjy1iy74idNIDzOPAXfwss28vMSyVkoH1lNJs_FnZuhZ_x5kCDQ&lib=M7e7VjGdYhGNibNzF0Jzci9IpvUU2j7dY")
+fetch("https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLisUScbIPiz8E5AiwyVtDGkPB14eME-ezvoMr8fd5bsjPxM7FCa0jvkDt-DLXRqnjhG4p4YRVEjfFUbS2BxGpp6uj9iJQAS-_lnAO2Jjy1iy74idNIDzOPAXfwss28vMSyVkoH1lNJs_FnZuhZ_x5kCDQ&lib=M7e7VjGdYhGNibNzF02dZLzldgH_iGx_g")
   .then(res => res.json())
   .then(data => {
     const container = document.getElementById("siteList");
@@ -148,7 +148,7 @@ fetch("https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLi
         const card = document.createElement("div");
         card.className = "card";
         card.innerHTML = `
-          <img src="${logo.trim()}" alt="Site Logosu" style="max-width: 150px;" />
+          <img src="${logo.trim()}" alt="Site Logosu" style="max-width: 150px; display: block; margin-bottom: 10px;" />
           <div class="bonus">${bonus.trim()}</div>
           <a href="${link.trim()}" target="_blank">Bonusu Al</a>
         `;
@@ -156,12 +156,9 @@ fetch("https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLi
       }
     });
 
-    applySearchFilter(); // Arama varsa çalıştır
+    applySearchFilter(); // Arama fonksiyonun varsa çağır
   });
-</script>
 
-  
-</script>
 
 
     // Arama filtresi
